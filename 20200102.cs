@@ -6,7 +6,7 @@ class Day1Ex2
 {
     public static void Run(string[] args)
     {
-        var lines = File.ReadAllLines("costs.txt");
+        var lines = File.ReadAllLines("202001.txt");
         List<int> costs = new List<int>();
         foreach (var line in lines)
         {

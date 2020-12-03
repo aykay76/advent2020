@@ -6,10 +6,7 @@ namespace advent2020
     {
         static void Main(string[] args)
         {
-            // Day1Ex1.Run(args);
-            // Day1Ex2.Run(args);
-            // Day2Ex1.Run(args);
-            Day2Ex2.Run(args);
+            Year2020Day3Ex2.Run(args);
         }
     }
 }

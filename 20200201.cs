@@ -6,7 +6,7 @@ class Day2Ex1
 {
     public static void Run(string[] args)
     {
-        var lines = File.ReadAllLines("passwords.txt");
+        var lines = File.ReadAllLines("202002.txt");
         int count = 0;
 
         foreach (var line in lines)
