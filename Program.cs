@@ -6,7 +6,7 @@ namespace advent2020
     {
         static void Main(string[] args)
         {
-            Year2020Day5Ex2.Run(args);
+            Year2020Day6.Ex2();
         }
     }
 }
