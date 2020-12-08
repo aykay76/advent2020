@@ -4,31 +4,37 @@ using System.IO;
 
 class Year2020Day8
 {
-    public static void Ex1()
+    public class Instruction
     {
-        string[] lines = File.ReadAllLines("202008.txt");
+        public string Operation { get; set; }
+        public int Operand { get; set; }
 
-        List<KeyValuePair<string, int>> instructions = new List<KeyValuePair<string, int>>();
-
-        foreach (string line in lines)
+        public void Switch()
         {
-            string[] parts = line.Split(" ");
-            instructions.Add(new KeyValuePair<string, int>(parts[0], int.Parse(parts[1])));
+            if (Operation == "nop") 
+            {
+                Operation = "jmp";
+            }
+            else if (Operation == "jmp")
+            {
+                Operation = "nop";
+            }
         }
+    }
 
+    public static bool Execute(List<Instruction> instructions, ref int acc)
+    {
         List<int> executed = new List<int>();
-        int acc = 0;
         int cur = 0;
         while (cur < instructions.Count)
         {
             if (executed.Contains(cur))
             {
-                Console.WriteLine(acc);
-                break;
+                return false;
             }
             else
             {
-                string op = instructions[cur].Key;
+                string op = instructions[cur].Operation;
                 executed.Add(cur);
 
                 if (op == "nop")
@@ -37,19 +43,62 @@ class Year2020Day8
                 }
                 else if (op == "acc")
                 {
-                    acc += instructions[cur].Value;
+                    acc += instructions[cur].Operand;
                     cur++;
                 }
                 else if (op == "jmp")
                 {
-                    cur += instructions[cur].Value;
+                    cur += instructions[cur].Operand;
                 }
             }
         }
+
+        return true;
+    }
+
+    public static void Ex1()
+    {
+        string[] lines = File.ReadAllLines("202008.txt");
+
+        List<Instruction> instructions = new List<Instruction>();
+
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(" ");
+            instructions.Add(new Instruction() { Operation = parts[0], Operand = int.Parse(parts[1])});
+        }
+
+        int acc = 0;
+        Execute(instructions, ref acc);
     }
 
     public static void Ex2()
     {
         string[] lines = File.ReadAllLines("202008.txt");
+
+        List<Instruction> instructions = new List<Instruction>();
+
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(" ");
+            instructions.Add(new Instruction() { Operation = parts[0], Operand = int.Parse(parts[1])});
+        }
+
+        int acc = 0;
+        if (Execute(instructions, ref acc) == false)
+        {
+            for (int i = 0; i < instructions.Count; i++)
+            {
+                instructions[i].Switch();
+
+                acc = 0;
+                if (Execute(instructions, ref acc))
+                {
+                    Console.WriteLine($"Success: {acc}");
+                }
+
+                instructions[i].Switch();
+            }
+        }
     }
 }
