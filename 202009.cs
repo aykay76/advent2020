@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 class Year2020Day9
 {
@@ -40,9 +41,9 @@ class Year2020Day9
         }
     }
 
-    public static void FindRange(long[] values, int badindex, long badvalue, ref int start, ref int end)
+    public static void FindRange(long[] values, int preamble, int badindex, long badvalue, ref int start, ref int end)
     {
-        for (int i = 0; i < badindex; i++)
+        for (int i = Math.Max(preamble, 0); i < badindex; i++)
         {
             long sum = values[i];
 
@@ -76,15 +77,16 @@ class Year2020Day9
 
         int badindex = -1;
         long badvalue = -1;
+        int preamble = 25;
 
-        for (int i = 25; i < values.Length; i++)
+        for (int i = preamble; i < values.Length; i++)
         {
             long sum = values[i];
             bool ok = false;
 
-            for (int j = 0; j < i; j++)
+            for (int j = Math.Max(0, i - preamble); j < i - 1; j++)
             {
-                for (int k = j; k < i; k++)
+                for (int k = j + 1; k < i; k++)
                 {
                     if (values[j] + values[k] == sum)
                     {
@@ -98,14 +100,21 @@ class Year2020Day9
             {
                 badindex = i;
                 badvalue = values[i];
+                Console.WriteLine($"{badindex} => {badvalue}");
                 break;
             }
         }
 
         int start = -1;
         int end = -1;
-        FindRange(values, badindex, badvalue, ref start, ref end);
+        FindRange(values, preamble, badindex, badvalue, ref start, ref end);
 
-        Console.WriteLine(values[start] + values[end + 1]);
+        List<long> range = new List<long>();
+        for (int i = start; i < end; i++)
+        {
+            range.Add(values[i]);
+        }
+
+        Console.WriteLine(range.Min() + range.Max());
     }
 }
